@@ -10,7 +10,7 @@ import Binding
 newtype Parser a = Parser { parse :: String -> Maybe (a, String) }
 
 failParser :: Parser a 
-failParser = Parser $ const Nothing
+failParser = Parser $ \s -> Nothing
 
 charParser :: Char -> Parser Char
 charParser ch = Parser $ \s -> case s of
@@ -54,7 +54,7 @@ plusParser p = do
     return (x:xs)
 
 starParser :: Parser a -> Parser [a]
-starParser p = plusParser p <|> pure []
+starParser p = plusParser p <|> (return [])
 
 varParser :: Parser String
 varParser = plusParser (predicateParser isLower)
